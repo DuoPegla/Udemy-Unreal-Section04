@@ -1,3 +1,7 @@
+
+# Created by https://www.gitignore.io/api/unrealengine
+
+### UnrealEngine ###
 # Visual Studio 2015 user specific files
 .vs/
 
@@ -41,7 +45,6 @@
 *.suo
 *.opensdf
 *.sdf
-*.VC.db
 *.VC.opendb
 
 # Precompiled Assets
@@ -73,3 +76,14 @@ Intermediate/*
 
 # Cache files for the editor to use
 DerivedDataCache/*
+
+# Plugin Intermediate and Binary folders
+Plugins/*/Intermediate/*
+Plugins/*/Binaries/*
+
+
+# End of https://www.gitignore.io/api/unrealengine
+
+# Ignore starter content
+Content/StarterContent/Textures
+Content/StarterContent/HDRI
