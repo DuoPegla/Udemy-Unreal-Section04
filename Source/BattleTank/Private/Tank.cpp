@@ -2,6 +2,10 @@
 
 #include "Tank.h"
 #include "TankAimingComponent.h"
+#include "Projectile.h"
+#include "TankBarrel.h"
+#include "Engine/World.h"
+#include "Engine/StaticMeshSocket.h"
 
 
 // Sets default values
@@ -18,6 +22,10 @@ void ATank::BeginPlay()
 {
 	Super::BeginPlay();
 	
+	if (!ProjectileBlueprint)
+	{
+		UE_LOG(LogTemp, Error, TEXT("Projectile BP is not assigned!"));
+	}
 }
 
 // Called to bind functionality to input
@@ -30,6 +38,19 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 void ATank::Fire()
 {
 	UE_LOG(LogTemp, Warning, TEXT("%f: Fire!"), GetWorld()->GetTimeSeconds());
+
+	if (!Barrel)
+		return;
+
+	if (!ProjectileBlueprint)
+		return;
+
+	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
+		ProjectileBlueprint,
+		Barrel->GetSocketLocation(FName("Projectile")),
+		Barrel->GetSocketRotation(FName("Projectile")));
+
+	Projectile->Launch(LaunchSpeed);
 }
 
 void ATank::AimAt(FVector HitLocation)
@@ -40,6 +61,7 @@ void ATank::AimAt(FVector HitLocation)
 void ATank::SetBarrelReference(UTankBarrel * BarrelToSet)
 {
 	TankAimingComponent->SetBarrelReference(BarrelToSet);
+	Barrel = BarrelToSet;
 }
 
 void ATank::SetTurretReference(UTankTurret * BarrelToSet)
