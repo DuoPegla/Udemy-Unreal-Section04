@@ -5,6 +5,7 @@
 #include "Components/StaticMeshComponent.h"
 #include "Kismet/GameplayStatics.h"
 #include "TankBarrel.h"
+#include "Engine/World.h"
 
 
 // Sets default values for this component's properties
@@ -41,8 +42,12 @@ void UTankAimingComponent::AimAt(FVector HitLocation, float LaunchSpeed)
 	if (IsProjectileVelocityValid)
 	{
 		FVector AimDirection = LaunchVelocity.GetSafeNormal();
-		//UE_LOG(LogTemp, Warning, TEXT("Aiming at %s"), *AimDirection.ToString());
 		MoveBarrelTowards(AimDirection);
+		UE_LOG(LogTemp, Warning, TEXT("%f: Aim solution found"), GetWorld()->GetTimeSeconds());
+	}
+	else
+	{
+		UE_LOG(LogTemp, Warning, TEXT("%f: NO Aim solution found"), GetWorld()->GetTimeSeconds());
 	}
 }
 
@@ -55,10 +60,8 @@ void UTankAimingComponent::MoveBarrelTowards(FVector AimDirection)
 {
 	FRotator BarrelRotator = Barrel->GetForwardVector().Rotation();
 	FRotator AimRotator = AimDirection.Rotation();
-	FRotator DeltaRotation = AimRotator - BarrelRotator;
-
-	UE_LOG(LogTemp, Warning, TEXT("Aim rotator: %s"), *AimRotator.ToString());
-
-	Barrel->Elevate(5);
+	FRotator DeltaRotator = AimRotator - BarrelRotator;
+	
+	Barrel->Elevate(DeltaRotator.Pitch);
 }
 
