@@ -48,6 +48,8 @@ void ATankAIController::Tick(float DeltaTime)
 	}
 
 	AITank->AimAt(PlayerTank->GetActorLocation());
+
+	AITank->Fire();
 }
 
 ATank* ATankAIController::GetAITank() const

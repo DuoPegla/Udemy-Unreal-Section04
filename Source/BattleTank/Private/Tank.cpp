@@ -37,13 +37,18 @@ void ATank::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
 
 void ATank::Fire()
 {
-	UE_LOG(LogTemp, Warning, TEXT("%f: Fire!"), GetWorld()->GetTimeSeconds());
+	bool isReloaded = (GetWorld()->GetTimeSeconds() - LastFireTime) > ReloadTimeInSeconds;
 
 	if (!Barrel)
 		return;
 
 	if (!ProjectileBlueprint)
 		return;
+
+	if (!isReloaded)
+		return;
+
+	LastFireTime = GetWorld()->GetTimeSeconds();
 
 	AProjectile* Projectile = GetWorld()->SpawnActor<AProjectile>(
 		ProjectileBlueprint,

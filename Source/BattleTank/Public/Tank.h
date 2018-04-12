@@ -41,11 +41,18 @@ public:
 	void AimAt(FVector HitLocation);
 
 private:	
-	UPROPERTY(EditAnywhere, Category = Firing)
-	float LaunchSpeed = 40 * 100;
-
-	UPROPERTY(EditAnywhere, Category = Setup)
+	
+	UPROPERTY(EditDefaultsOnly, Category = Setup)
 	TSubclassOf<AProjectile> ProjectileBlueprint;
 
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float LaunchSpeed = 40 * 100;
+
+	UPROPERTY(EditDefaultsOnly, Category = Firing)
+	float ReloadTimeInSeconds = 3;
+
 	UTankBarrel* Barrel = nullptr;
+
+
+	float LastFireTime = 0;
 };
